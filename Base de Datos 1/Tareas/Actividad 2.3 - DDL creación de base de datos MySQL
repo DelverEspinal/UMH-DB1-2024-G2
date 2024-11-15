@@ -1,0 +1,188 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2024-11-14 22:12
+-- Model: New Model
+-- Version: 1.0
+-- Project: Vehiculo
+-- Author: Kingdom
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `rentaVehiculo` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_cliente` (
+  `idCliente` INT(11) NOT NULL,
+  `edad` INT(2) NULL DEFAULT NULL,
+  `ocupacion` MEDIUMTEXT NULL DEFAULT NULL,
+  `lugarTrabajo` VARCHAR(75) NULL DEFAULT NULL,
+  `fechaNacimiento` DATE NULL DEFAULT NULL,
+  `numIdentificación` INT(13) NULL DEFAULT NULL,
+  `nombreCompleto` LONGTEXT NULL DEFAULT NULL,
+  `dirección` VARCHAR(150) NULL DEFAULT NULL,
+  `numeroTelefono` INT(8) NULL DEFAULT NULL,
+  PRIMARY KEY (`idCliente`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_solicitud` (
+  `idSolicitud` INT(11) NOT NULL,
+  `fechaSolicitud` DATE NULL DEFAULT NULL,
+  `fechaHoraDevolucion` DATETIME NULL DEFAULT NULL,
+  `fechaHoraRetiro` DATETIME NULL DEFAULT NULL,
+  `oficinaDevolucion` INT(11) NOT NULL,
+  `oficinaEntrega` INT(11) NOT NULL,
+  `idCliente` INT(11) NOT NULL,
+  `idOficina` INT(11) NOT NULL,
+  `idTarifas` INT(11) NOT NULL,
+  PRIMARY KEY (`idSolicitud`),
+  INDEX `fk_Solicitud_Cliente_idx` (`idCliente` ASC) VISIBLE,
+  INDEX `fk_Solicitud_Oficina1_idx` (`idOficina` ASC) VISIBLE,
+  INDEX `fk_Solicitud_Tarifas1_idx` (`idTarifas` ASC) INVISIBLE,
+  INDEX `idOficinaDevolucion_idx` (`oficinaEntrega` ASC, `oficinaDevolucion` ASC) VISIBLE,
+  CONSTRAINT `fk_Solicitud_Cliente`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `rentaVehiculo`.`tbl_cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Solicitud_Oficina1`
+    FOREIGN KEY (`idOficina`)
+    REFERENCES `rentaVehiculo`.`tbl_oficina` (`idOficina`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Solicitud_Tarifas1`
+    FOREIGN KEY (`idTarifas`)
+    REFERENCES `rentaVehiculo`.`tbl_tarifas` (`idTarifas`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idOficinaDevolucion`
+    FOREIGN KEY (`oficinaEntrega` , `oficinaDevolucion`)
+    REFERENCES `rentaVehiculo`.`tbl_oficina` (`idOficina` , `idOficina`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_vehiculo` (
+  `idVehiculo` INT(11) NOT NULL,
+  `numPuertas` INT(11) NULL DEFAULT NULL,
+  `kilometraje` DECIMAL(8,2) NULL DEFAULT NULL,
+  `matricula` VARCHAR(10) NULL DEFAULT NULL,
+  `numAsientos` INT(2) NULL DEFAULT NULL,
+  `año` YEAR NULL DEFAULT NULL,
+  `numeroVIN` CHAR(17) NULL DEFAULT NULL,
+  `idModelos` INT(11) NOT NULL,
+  `idColor` INT(11) NOT NULL,
+  PRIMARY KEY (`idVehiculo`),
+  INDEX `fk_tbl_vehiculo_tbl_modelos1_idx` (`idModelos` ASC) VISIBLE,
+  INDEX `fk_tbl_vehiculo_tbl_color1_idx` (`idColor` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_vehiculo_tbl_modelos1`
+    FOREIGN KEY (`idModelos`)
+    REFERENCES `rentaVehiculo`.`tbl_modelos` (`idModelos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_vehiculo_tbl_color1`
+    FOREIGN KEY (`idColor`)
+    REFERENCES `rentaVehiculo`.`tbl_color` (`idColor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_tarifas` (
+  `idTarifas` INT(11) NOT NULL,
+  `precioSeguro` DECIMAL(10,2) NULL DEFAULT NULL,
+  `precioServicio` DECIMAL(10,2) NULL DEFAULT NULL,
+  `estado` LONGTEXT NULL DEFAULT NULL,
+  `idVehiculo` INT(11) NOT NULL,
+  PRIMARY KEY (`idTarifas`),
+  INDEX `fk_Tarifas_Vehiculo1_idx` (`idVehiculo` ASC) VISIBLE,
+  CONSTRAINT `fk_Tarifas_Vehiculo1`
+    FOREIGN KEY (`idVehiculo`)
+    REFERENCES `rentaVehiculo`.`tbl_vehiculo` (`idVehiculo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_referencia` (
+  `idPersonaContacto` INT(11) NOT NULL,
+  `correoElectronico` VARCHAR(30) NULL DEFAULT NULL,
+  `numeroTelefono` INT(8) NULL DEFAULT NULL,
+  `direccion` VARCHAR(250) NULL DEFAULT NULL,
+  `nombreCompleto` LONGTEXT NULL DEFAULT NULL,
+  `numIdentificacion` INT(13) NULL DEFAULT NULL,
+  `fechaNacimiento` DATE NULL DEFAULT NULL,
+  `parentesco` MEDIUMTEXT NULL DEFAULT NULL,
+  `idCliente` INT(11) NOT NULL,
+  PRIMARY KEY (`idPersonaContacto`),
+  INDEX `fk_Referencia_Cliente1_idx` (`idCliente` ASC) VISIBLE,
+  CONSTRAINT `fk_Referencia_Cliente1`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `rentaVehiculo`.`tbl_cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_oficina` (
+  `idOficina` INT(11) NOT NULL,
+  `nombre` LONGTEXT NULL DEFAULT NULL,
+  `direccion` VARCHAR(250) NULL DEFAULT NULL,
+  `telefono` INT(8) NULL DEFAULT NULL,
+  `estado` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idOficina`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_licencias` (
+  `idLicencia` INT(11) NOT NULL,
+  `numeroLicencia` INT(13) NULL DEFAULT NULL,
+  `fechaVenceLicencia` DATE NULL DEFAULT NULL,
+  `idCliente` INT(11) NOT NULL,
+  PRIMARY KEY (`idLicencia`),
+  INDEX `fk_tbl_licencias_tbl_cliente1_idx` (`idCliente` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_licencias_tbl_cliente1`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `rentaVehiculo`.`tbl_cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_modelos` (
+  `idModelos` INT(11) NOT NULL,
+  `modelo` VARCHAR(20) NULL DEFAULT NULL,
+  `tipo` VARCHAR(15) NULL DEFAULT NULL,
+  `idMarca` INT(11) NOT NULL,
+  PRIMARY KEY (`idModelos`),
+  INDEX `fk_tbl_modelos_tbl_marcas1_idx` (`idMarca` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_modelos_tbl_marcas1`
+    FOREIGN KEY (`idMarca`)
+    REFERENCES `rentaVehiculo`.`tbl_marcas` (`idMarca`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_marcas` (
+  `idMarca` INT(11) NOT NULL,
+  `pais_de_origen` LONGTEXT NULL DEFAULT NULL,
+  `fechaRegistro` DATETIME NULL DEFAULT NULL,
+  `fechaModificacion` DATETIME NULL DEFAULT NULL,
+  `pais de ensamblaje` LONGTEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`idMarca`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `rentaVehiculo`.`tbl_color` (
+  `idColor` INT(11) NOT NULL,
+  `nombreColor` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idColor`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
