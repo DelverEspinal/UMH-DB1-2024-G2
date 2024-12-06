@@ -1,0 +1,152 @@
+USE Visa_solicitud
+
+INSERT INTO tbl_Solicitante (id_solicitante, nombre_completo, sexo, fecha_nacimiento, estado_civil, nacionalidad, domicilio_actual, telefono, correo_electronico, ocupacion, antecedentes_penales, estancia_legal) 
+VALUES 
+(1, 'Carlos Perez', 'M', '1995-05-15', 'Soltero', 'Hondureña', 'Tegucigalpa', '98765432', 'carlos.perez@email.com', 'Ingeniero', 'No', 'Temporal'),
+(2, 'Ana Gomez', 'F', '1990-09-10', 'Casada', 'Hondureña', 'San Pedro Sula', '98321456', 'ana.gomez@email.com', 'Doctora', 'No', 'Permanente'),
+(3, 'Luis López', 'M', '1987-12-23', 'Casado', 'Salvadoreña', 'La Ceiba', '99564321', 'luis.lopez@email.com', 'Profesor', 'No', 'Permanente'),
+(4, 'Maria Martinez', 'F', '1998-04-12', 'Soltera', 'Hondureña', 'Comayagua', '98214563', 'maria.martinez@email.com', 'Estudiante', 'No', 'Temporal'),
+(5, 'Jorge Velasquez', 'M', '1985-06-18', 'Divorciado', 'Nicaragüense', 'Tegucigalpa', '98711234', 'jorge.velasquez@email.com', 'Abogado', 'No', 'Permanente'),
+(6, 'Sofia Rivera', 'F', '2000-01-29', 'Soltera', 'Hondureña', 'San Pedro Sula', '98124567', 'sofia.rivera@email.com', 'Diseñadora', 'No', 'Temporal'),
+(7, 'Ricardo Mejia', 'M', '1992-03-05', 'Casado', 'Guatemalteca', 'La Ceiba', '98765321', 'ricardo.mejia@email.com', 'Contador', 'No', 'Permanente'),
+(8, 'Diana Torres', 'F', '1997-08-14', 'Soltera', 'Hondureña', 'Choluteca', '98237654', 'diana.torres@email.com', 'Enfermera', 'No', 'Temporal'),
+(9, 'Oscar Figueroa', 'M', '1993-11-25', 'Casado', 'Salvadoreña', 'Tegucigalpa', '98654321', 'oscar.figueroa@email.com', 'Chef', 'No', 'Permanente'),
+(10, 'Elena Castillo', 'F', '1991-07-30', 'Casada', 'Hondureña', 'Danlí', '98245678', 'elena.castillo@email.com', 'Maestra', 'No', 'Permanente');
+
+INSERT INTO tbl_Pasaporte (id_pasaporte, pais_expedicion, fecha_expedicion, fecha_vencimiento, id_solicitante) 
+VALUES 
+(1, 'Honduras', '2021-01-01', '2031-01-01', 1),
+(2, 'Honduras', '2020-06-15', '2030-06-15', 2),
+(3, 'Honduras', '2019-12-20', '2029-12-20', 3),
+(4, 'Honduras', '2021-03-10', '2031-03-10', 4),
+(5, 'Honduras', '2022-05-05', '2032-05-05', 5),
+(6, 'Honduras', '2018-11-11', '2028-11-11', 6),
+(7, 'Honduras', '2020-08-08', '2030-08-08', 7),
+(8, 'Honduras', '2021-02-25', '2031-02-25', 8),
+(9, 'Honduras', '2022-07-07', '2032-07-07', 9),
+(10, 'Honduras', '2019-09-15', '2029-09-15', 10);
+
+INSERT INTO tbl_Visa (id_visa, tipo_visa, fecha_emision, fecha_expiracion, id_solicitante) 
+VALUES 
+(1, 'Trabajo', '2023-01-01', '2025-01-01', 1),
+(2, 'Turismo', '2022-06-01', '2024-06-01', 2),
+(3, 'Estudio', '2021-09-15', '2023-09-15', 3),
+(4, 'Residencia', '2023-03-01', '2025-03-01', 4),
+(5, 'Negocios', '2022-05-20', '2024-05-20', 5),
+(6, 'Turismo', '2021-02-10', '2023-02-10', 6),
+(7, 'Estudio', '2023-04-15', '2025-04-15', 7),
+(8, 'Trabajo', '2022-07-30', '2024-07-30', 8),
+(9, 'Residencia', '2021-10-05', '2023-10-05', 9),
+(10, 'Negocios', '2022-11-01', '2024-11-01', 10);
+
+INSERT INTO tbl_Deportacion (id_deportacion, fecha_deportacion, pais_deportacion, causa_deportacion, duracion_deportacion, id_solicitante) 
+VALUES 
+(1, '2023-01-15', 'Estados Unidos', 'Estancia ilegal', '2023-07-15', 1),
+(2, '2022-10-10', 'México', 'Documentación incompleta', '2023-01-10', 2),
+(3, '2021-05-20', 'Canadá', 'Exceder tiempo permitido', '2021-06-20', 3),
+(4, '2020-11-30', 'España', 'Falta de visa', '2021-01-30', 4),
+(5, '2023-06-25', 'Estados Unidos', 'Estancia ilegal', '2023-11-25', 5),
+(6, '2021-09-05', 'México', 'Documentación incompleta', '2021-11-05', 6),
+(7, '2022-12-15', 'Italia', 'Falta de visa', '2023-04-15', 7),
+(8, '2021-03-20', 'Canadá', 'Exceder tiempo permitido', '2021-04-20', 8),
+(9, '2023-05-10', 'Estados Unidos', 'Estancia ilegal', '2023-11-10', 9),
+(10, '2020-08-30', 'México', 'Documentación incompleta', '2020-10-30', 10);
+
+INSERT INTO tbl_Viaje (id_viaje, fecha_ingreso, ciudad_ingreso, duracion_estancia, proposito_viaje, id_solicitante, id_deportacion) 
+VALUES 
+(1, '2024-01-01', 'Miami', '15 días', 'Negocios', 1, 1),
+(2, '2024-02-01', 'Los Ángeles', '7 días', 'Vacaciones', 2, 2),
+(3, '2024-03-01', 'Toronto', '10 días', 'Estudio', 3, 3),
+(4, '2024-04-01', 'Madrid', '20 días', 'Familia', 4, 4),
+(5, '2024-05-01', 'Roma', '14 días', 'Turismo', 5, 5),
+(6, '2024-06-01', 'Nueva York', '30 días', 'Trabajo', 6, 6),
+(7, '2024-07-01', 'Londres', '25 días', 'Residencia', 7, 7),
+(8, '2024-08-01', 'París', '21 días', 'Educación', 8, 8),
+(9, '2024-09-01', 'Berlín', '16 días', 'Cultura', 9, 9),
+(10, '2024-10-01', 'Tokio', '12 días', 'Turismo', 10, 10);
+
+-- tbl_Empresa
+INSERT INTO tbl_Empresa (id_empresa, nombre_empresa, sector_empresa, ubicacion, id_solicitante)
+VALUES 
+(1, 'TechSolutions', 'Tecnología', 'Tegucigalpa', 1),
+(2, 'HealthCorp', 'Salud', 'San Pedro Sula', 2),
+(3, 'EduPlus', 'Educación', 'La Ceiba', 3),
+(4, 'AgroHonduras', 'Agricultura', 'Comayagua', 4),
+(5, 'LegalAid', 'Servicios Legales', 'Choluteca', 5),
+(6, 'CreativeDesign', 'Diseño', 'Danlí', 6),
+(7, 'FinancePro', 'Finanzas', 'San Pedro Sula', 7),
+(8, 'TourismHonduras', 'Turismo', 'La Ceiba', 8),
+(9, 'GlobalFoods', 'Alimentos', 'Tegucigalpa', 9),
+(10, 'BuildIt', 'Construcción', 'Comayagua', 10);
+
+-- tbl_Oficina
+INSERT INTO tbl_Oficina (id_oficina, nombre_oficina, ubicacion, telefono, correo_electronico, horario_atencion)
+VALUES 
+(1, 'Consulado Tegucigalpa', 'Tegucigalpa', '22334455', 'tegu.consulado@email.com', '08:00:00'),
+(2, 'Consulado SPS', 'San Pedro Sula', '22335678', 'sps.consulado@email.com', '09:00:00'),
+(3, 'Embajada Canadá', 'Tegucigalpa', '22337890', 'canada.embajada@email.com', '07:00:00'),
+(4, 'Embajada México', 'San Pedro Sula', '22339012', 'mexico.embajada@email.com', '08:30:00'),
+(5, 'Embajada España', 'Tegucigalpa', '22340123', 'espana.embajada@email.com', '09:30:00'),
+(6, 'Embajada USA', 'San Pedro Sula', '22342345', 'usa.embajada@email.com', '08:00:00'),
+(7, 'Consulado Italia', 'Tegucigalpa', '22344567', 'italia.consulado@email.com', '09:00:00'),
+(8, 'Embajada Francia', 'San Pedro Sula', '22345678', 'francia.embajada@email.com', '10:00:00'),
+(9, 'Consulado Alemania', 'La Ceiba', '22346789', 'alemania.consulado@email.com', '08:30:00'),
+(10, 'Embajada Japón', 'Tegucigalpa', '22347890', 'japon.embajada@email.com', '09:00:00');
+
+-- tbl_Tutor
+INSERT INTO tbl_Tutor (id_tutor, nombre_completo, relacion_con_menor, documento_tutela)
+VALUES 
+(1, 'Juan Perez', 'Padre', 'Acta de Nacimiento'),
+(2, 'Laura Gomez', 'Madre', 'Certificado de Tutela'),
+(3, 'Carlos Lopez', 'Hermano', 'Poder Notarial'),
+(4, 'Ana Martinez', 'Tía', 'Declaración Jurada'),
+(5, 'Jose Velasquez', 'Abuelo', 'Autorización Legal'),
+(6, 'Sofia Rivera', 'Prima', 'Carta Poder'),
+(7, 'Ricardo Mejia', 'Tutor Legal', 'Resolución Judicial'),
+(8, 'Diana Torres', 'Hermana', 'Acta de Custodia'),
+(9, 'Oscar Figueroa', 'Padre', 'Certificado Legal'),
+(10, 'Elena Castillo', 'Madre', 'Permiso Judicial');
+
+
+-- tbl_Documento_adjunto
+INSERT INTO tbl_Documento_adjunto (id_documento, nombre_documento, descripcion, fecha_emision, id_tutor)
+VALUES 
+(1, 'Carta Poder', 'Autorización de viaje', '2023-01-15', 1),
+(2, 'Certificado Médico', 'Apto para viajar', '2022-12-01', 2),
+(3, 'Carta Laboral', 'Prueba de empleo', '2021-11-20', 3),
+(4, 'Contrato de Trabajo', 'Vinculación laboral', '2023-05-05', 4),
+(5, 'Acta de Nacimiento', 'Documento oficial', '2022-07-15', 5),
+(6, 'Certificado Escolar', 'Prueba académica', '2021-09-10', 6),
+(7, 'Poder Notarial', 'Autorización legal', '2023-03-25', 7),
+(8, 'Certificado de Propiedad', 'Bien inmueble', '2022-08-05', 8),
+(9, 'Declaración Jurada', 'Declaración formal', '2021-10-01', 9),
+(10, 'Permiso Especial', 'Autorización específica', '2022-04-10', 10);
+
+
+-- tbl_solicitud
+INSERT INTO tbl_solicitud (id_solicitud, fecha_solicitud, tipo_solicitud, estatus, id_solicitante, id_oficina)
+VALUES 
+(1, '2024-01-01', 'Visa', 'Aprobada', 1, 1),
+(2, '2024-02-01', 'Visa', 'Rechazada', 2, 2),
+(3, '2024-03-01', 'Visa', 'Pendiente', 3, 3),
+(4, '2024-04-01', 'Visa', 'Aprobada', 4, 4),
+(5, '2024-05-01', 'Permiso', 'Pendiente', 5, 5),
+(6, '2024-06-01', 'Permiso', 'Rechazada', 6, 6),
+(7, '2024-07-01', 'Visa', 'Aprobada', 7, 7),
+(8, '2024-08-01', 'Permiso', 'Pendiente', 8, 8),
+(9, '2024-09-01', 'Visa', 'Aprobada', 9, 9),
+(10, '2024-10-01', 'Permiso', 'Rechazada', 10, 10);
+
+-- tbl_Relacion_tutor_solicitud
+INSERT INTO relacion_tutor_solicitud (id_relacion, id_solicitud, id_tutor)
+VALUES 
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5),
+(6, 6, 6),
+(7, 7, 7),
+(8, 8, 8),
+(9, 9, 9),
+(10, 10, 10);
