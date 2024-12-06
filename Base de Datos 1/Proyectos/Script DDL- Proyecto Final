@@ -1,0 +1,204 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2024-12-06 05:40
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: Kingdom
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `Visa_solicitud` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_solicitud` (
+  `id_solicitud` INT(11) NOT NULL,
+  `fecha_solicitud` DATE NULL DEFAULT NULL,
+  `tipo_solicitud` VARCHAR(45) NULL DEFAULT NULL,
+  `estatus` VARCHAR(45) NULL DEFAULT NULL,
+  `id_solicitante` INT(11) NOT NULL,
+  `id_oficina` INT(11) NOT NULL,
+  PRIMARY KEY (`id_solicitud`),
+  INDEX `fk_tbl_solicitud_tbl_Solicitante_idx` (`id_solicitante` ASC) VISIBLE,
+  INDEX `fk_tbl_solicitud_tbl_Oficina1_idx` (`id_oficina` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_solicitud_tbl_Solicitante`
+    FOREIGN KEY (`id_solicitante`)
+    REFERENCES `Visa_solicitud`.`tbl_Solicitante` (`id_solicitante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_solicitud_tbl_Oficina1`
+    FOREIGN KEY (`id_oficina`)
+    REFERENCES `Visa_solicitud`.`tbl_Oficina` (`id_oficina`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Oficina` (
+  `id_oficina` INT(11) NOT NULL,
+  `nombre_oficina` VARCHAR(45) NULL DEFAULT NULL,
+  `ubicacion` VARCHAR(45) NULL DEFAULT NULL,
+  `telefono` INT(11) NULL DEFAULT NULL,
+  `correo_electronico` VARCHAR(30) NULL DEFAULT NULL,
+  `horario_atencion` TIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id_oficina`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Solicitante` (
+  `id_solicitante` INT(11) NOT NULL,
+  `nombre_completo` VARCHAR(45) NULL DEFAULT NULL,
+  `sexo` VARCHAR(45) NULL DEFAULT NULL,
+  `fecha_nacimiento` DATETIME NULL DEFAULT NULL,
+  `estado_civil` VARCHAR(45) NULL DEFAULT NULL,
+  `nacionalidad` VARCHAR(45) NULL DEFAULT NULL,
+  `domicilio_actual` VARCHAR(45) NULL DEFAULT NULL,
+  `telefono` VARCHAR(20) NULL DEFAULT NULL,
+  `correo_electronico` VARCHAR(30) NULL DEFAULT NULL,
+  `ocupacion` VARCHAR(45) NULL DEFAULT NULL,
+  `antecedentes_penales` VARCHAR(3) NULL DEFAULT NULL,
+  `estancia_legal` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_solicitante`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Viaje` (
+  `id_viaje` INT(11) NOT NULL,
+  `fecha_ingreso` DATE NULL DEFAULT NULL,
+  `ciudad_ingreso` VARCHAR(30) NULL DEFAULT NULL,
+  `duracion_estancia` VARCHAR(30) NULL DEFAULT NULL,
+  `proposito_viaje` VARCHAR(45) NULL DEFAULT NULL,
+  `id_solicitante` INT(11) NOT NULL,
+  `id_deportacion` INT(11) NOT NULL,
+  PRIMARY KEY (`id_viaje`),
+  INDEX `fk_tbl_Viaje_tbl_Solicitante1_idx` (`id_solicitante` ASC) VISIBLE,
+  INDEX `fk_tbl_Viaje_tbl_Deportacion1_idx` (`id_deportacion` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_Viaje_tbl_Solicitante1`
+    FOREIGN KEY (`id_solicitante`)
+    REFERENCES `Visa_solicitud`.`tbl_Solicitante` (`id_solicitante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_Viaje_tbl_Deportacion1`
+    FOREIGN KEY (`id_deportacion`)
+    REFERENCES `Visa_solicitud`.`tbl_Deportacion` (`id_deportacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Deportacion` (
+  `id_deportacion` INT(11) NOT NULL,
+  `fecha_deportacion` DATE NULL DEFAULT NULL,
+  `pais_deportacion` VARCHAR(30) NULL DEFAULT NULL,
+  `causa_deportacion` VARCHAR(50) NULL DEFAULT NULL,
+  `duracion_deportacion` DATE NULL DEFAULT NULL,
+  `id_solicitante` INT(11) NOT NULL,
+  PRIMARY KEY (`id_deportacion`),
+  INDEX `fk_tbl_Deportacion_tbl_Solicitante1_idx` (`id_solicitante` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_Deportacion_tbl_Solicitante1`
+    FOREIGN KEY (`id_solicitante`)
+    REFERENCES `Visa_solicitud`.`tbl_Solicitante` (`id_solicitante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_visa` (
+  `id_visa` INT(11) NOT NULL,
+  `tipo_visa` VARCHAR(30) NULL DEFAULT NULL,
+  `pais_emisor` VARCHAR(20) NULL DEFAULT NULL,
+  `fecha_emision` DATE NULL DEFAULT NULL,
+  `fecha_expiracion` DATE NULL DEFAULT NULL,
+  `estatus` VARCHAR(20) NULL DEFAULT NULL,
+  `id_solicitante` INT(11) NOT NULL,
+  PRIMARY KEY (`id_visa`),
+  INDEX `fk_tbl_visa_tbl_Solicitante1_idx` (`id_solicitante` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_visa_tbl_Solicitante1`
+    FOREIGN KEY (`id_solicitante`)
+    REFERENCES `Visa_solicitud`.`tbl_Solicitante` (`id_solicitante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Pasaporte` (
+  `id_pasaporte` INT(11) NOT NULL,
+  `pais_expedicion` VARCHAR(20) NULL DEFAULT NULL,
+  `fecha_expedicion` DATE NULL DEFAULT NULL,
+  `fecha_vencimiento` DATE NULL DEFAULT NULL,
+  `id_solicitante` INT(11) NOT NULL,
+  PRIMARY KEY (`id_pasaporte`),
+  INDEX `fk_tbl_Pasaporte_tbl_Solicitante1_idx` (`id_solicitante` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_Pasaporte_tbl_Solicitante1`
+    FOREIGN KEY (`id_solicitante`)
+    REFERENCES `Visa_solicitud`.`tbl_Solicitante` (`id_solicitante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Empresa` (
+  `id_empresa` INT(11) NOT NULL,
+  `nombre_empresa` VARCHAR(45) NULL DEFAULT NULL,
+  `sector_empresa` VARCHAR(100) NULL DEFAULT NULL,
+  `ubicacion` VARCHAR(200) NULL DEFAULT NULL,
+  `id_solicitante` INT(11) NOT NULL,
+  PRIMARY KEY (`id_empresa`),
+  INDEX `fk_tbl_Empresa_tbl_Solicitante1_idx` (`id_solicitante` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_Empresa_tbl_Solicitante1`
+    FOREIGN KEY (`id_solicitante`)
+    REFERENCES `Visa_solicitud`.`tbl_Solicitante` (`id_solicitante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Tutor` (
+  `id_tutor` INT(11) NOT NULL,
+  `nombre_completo` VARCHAR(30) NULL DEFAULT NULL,
+  `relacion_con_menor` VARCHAR(50) NULL DEFAULT NULL,
+  `documento_tutela` VARCHAR(200) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_tutor`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Documento_adjunto` (
+  `id_documento` INT(11) NOT NULL,
+  `nombre_documento` VARCHAR(45) NULL DEFAULT NULL,
+  `descripcion` VARCHAR(250) NULL DEFAULT NULL,
+  `fecha_emision` DATE NULL DEFAULT NULL,
+  `id_tutor` INT(11) NOT NULL,
+  PRIMARY KEY (`id_documento`),
+  INDEX `fk_tbl_Documento_adjunto_tbl_Tutor1_idx` (`id_tutor` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_Documento_adjunto_tbl_Tutor1`
+    FOREIGN KEY (`id_tutor`)
+    REFERENCES `Visa_solicitud`.`tbl_Tutor` (`id_tutor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`Relacion_tutor_solicitud` (
+  `id_relacion` INT(11) NOT NULL,
+  `id_solicitud` INT(11) NOT NULL,
+  `id_tutor` INT(11) NOT NULL,
+  PRIMARY KEY (`id_relacion`, `id_solicitud`, `id_tutor`),
+  INDEX `fk_tbl_solicitud_has_tbl_Tutor_tbl_Tutor1_idx` (`id_tutor` ASC) VISIBLE,
+  INDEX `fk_tbl_solicitud_has_tbl_Tutor_tbl_solicitud1_idx` (`id_solicitud` ASC) VISIBLE,
+  CONSTRAINT `fk_tbl_solicitud_has_tbl_Tutor_tbl_solicitud1`
+    FOREIGN KEY (`id_solicitud`)
+    REFERENCES `Visa_solicitud`.`tbl_solicitud` (`id_solicitud`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tbl_solicitud_has_tbl_Tutor_tbl_Tutor1`
+    FOREIGN KEY (`id_tutor`)
+    REFERENCES `Visa_solicitud`.`tbl_Tutor` (`id_tutor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
