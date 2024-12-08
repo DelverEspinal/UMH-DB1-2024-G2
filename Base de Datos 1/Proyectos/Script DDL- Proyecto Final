@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `Visa_solicitud`.`tbl_Solicitante` (
   `id_solicitante` INT(11) NOT NULL,
   `nombre_completo` VARCHAR(45) NULL DEFAULT NULL,
   `sexo` VARCHAR(45) NULL DEFAULT NULL,
-  `fecha_nacimiento` DATETIME NULL DEFAULT NULL,
+  `fecha_nacimiento` DATE NULL DEFAULT NULL,
   `estado_civil` VARCHAR(45) NULL DEFAULT NULL,
   `nacionalidad` VARCHAR(45) NULL DEFAULT NULL,
   `domicilio_actual` VARCHAR(45) NULL DEFAULT NULL,
